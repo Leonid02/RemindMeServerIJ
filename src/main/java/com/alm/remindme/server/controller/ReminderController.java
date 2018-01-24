@@ -1,37 +1,44 @@
 package com.alm.remindme.server.controller;
 
 import com.alm.remindme.server.entity.Remind;
-import com.alm.remindme.server.repository.RemindRepository;
+import com.alm.remindme.server.service.ReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 //@Controller
 @RestController
-@RequestMapping("/reminder")
 public class ReminderController {
     @Autowired
-    private RemindRepository remindRepository;
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    @ResponseBody
-    public Remind getReminder() {
-        List<Remind> list = remindRepository.findAll();
-//            return "My first Reminder";
-        return createMockRemind();
-    }
-public Remind createMockRemind(){
-        Remind remind=new Remind();
-        remind.setId(1);
-        remind.setRemindDate(new Date());
-        remind.setTitle("My First Reminder");
+    private ReminderService service;
 
-        return remind;
-}
+    @RequestMapping(value = "//reminders", method = RequestMethod.GET)
+    @ResponseBody
+    public List <Remind> getAllReminders() {
+        List<Remind> list = service.getAll();
+
+        return list;
+    }
+    @RequestMapping(value = "//reminders/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Remind getReminder(@PathVariable("id") long remindID){
+
+        return service.getByID(remindID);
+    }
+    @RequestMapping(value = "//reminders", method = RequestMethod.POST)
+    @ResponseBody
+    public Remind saveReminder(@RequestBody Remind remind){
+
+        return service.save(remind);
+    }
+
+    @RequestMapping(value = "//reminders/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public void delete(@PathVariable("id") long id){
+        service.remove(id);
+    }
+
 }
 
 
