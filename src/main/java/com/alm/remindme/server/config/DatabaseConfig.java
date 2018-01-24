@@ -31,11 +31,14 @@ public class DatabaseConfig {
     private Environment env;
     //    @Autowired
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setGenerateDdl(true);
+
         LocalContainerEntityManagerFactoryBean em= new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
         em.setPackagesToScan(env.getRequiredProperty("db.entity.package"));
-        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(getHibernateProperties());
         return em;
     }
@@ -60,9 +63,9 @@ public class DatabaseConfig {
         return ds;
     }
     @Bean
-    public PlatformTransactionManager platformTransactionManager(){
+    public PlatformTransactionManager transactionManager(){
         JpaTransactionManager manager = new JpaTransactionManager();
-        manager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+        manager.setEntityManagerFactory(entityManagerFactory().getObject());
 
         return manager;
     }
