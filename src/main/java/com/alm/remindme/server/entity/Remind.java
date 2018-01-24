@@ -16,7 +16,7 @@ public class Remind {
     @Column(name = "title",nullable = false,length = 50)
     private String title;
     @Column(name = "remin_date",nullable = false)
-    private Date temindDate;
+    private Date remindDate;
 
     public Remind() {
     }
@@ -37,11 +37,11 @@ public class Remind {
         this.title = title;
     }
 
-    public Date getTemindDate() {
-        return temindDate;
+    public Date getRemindDate() {
+        return remindDate;
     }
 
-    public void setTemindDate(Date temindDate) {
-        this.temindDate = temindDate;
+    public void setRemindDate(Date temindDate) {
+        this.remindDate = temindDate;
     }
 }
